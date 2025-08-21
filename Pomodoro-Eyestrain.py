@@ -1,34 +1,41 @@
 import time
 from tkinter import *
 from plyer import notification
+import threading  # <-- Add this import
 
 #Functions for specific timers. This is a looping timer which notifies you about when to take a break depending on what program selected
 def eyeRest():
     while True:
         notification.notify(
-        app_icon ="C:/Users/santo/Desktop/Python A/Ass 4/eye.ico",
-        title = "Please rest your eyes",
-        message = "20 min reminder to look at something 20 meters away for 20 seconds",
-        timeout=10
+            app_icon="C:/Users/JK-SANTOS/Documents/GitHub/Pomodoro-Eyestrain-Helper-and-Reminder/assets/eye.ico",
+            title="Please rest your eyes",
+            message="20 min reminder to look at something 20 meters away for 20 seconds",
+            timeout=10
         )
         time.sleep(15)
 
 def pomodoro():
     while True:
         notification.notify(
-        app_icon ="C:/Users/santo/Desktop/Python A/Ass 4/pomodoro.ico",
-        title = "Study Timer Activated",
-        message = "25 min study time and 5 min break time",
-        timeout=10
+            app_icon="C:/Users/JK-SANTOS/Documents/GitHub/Pomodoro-Eyestrain-Helper-and-Reminder/assets/pomodoro.ico",
+            title="Study Timer Activated",
+            message="25 min study time and 5 min break time",
+            timeout=10
         )
         time.sleep(15)
         notification.notify(
-        app_icon ="C:/Users/santo/Desktop/Python A/Ass 4/pomodoro.ico",
-        title = "BREAK TIME",
-        message = "5 min break time starts now!",
-        timeout=10
+            app_icon="C:/Users/santo/Desktop/Python A/Ass 4/pomodoro.ico",
+            title="BREAK TIME",
+            message="5 min break time starts now!",
+            timeout=10
         )
         time.sleep(20)
+
+def start_eyeRest_thread():
+    threading.Thread(target=eyeRest, daemon=True).start()
+
+def start_pomodoro_thread():
+    threading.Thread(target=pomodoro, daemon=True).start()
 
 #About info on why this program is created and its contents
 def about():
@@ -48,12 +55,12 @@ menuGUI.config(menu=menuOptions)
 #cascade option for eye rest program
 options = Menu(menuOptions,tearoff=0)
 menuOptions.add_cascade(label="Eye Rest",menu=options)
-options.add_command(label="Start",command=eyeRest)
+options.add_command(label="Start",command=start_eyeRest_thread)
 
 #cascade option for pomodoro program
 options = Menu(menuOptions,tearoff=0)
 menuOptions.add_cascade(label="Pomodoro",menu=options)
-options.add_command(label="Start",command=pomodoro)
+options.add_command(label="Start",command=start_pomodoro_thread)
 
 #cascade option for bringing up about text
 options = Menu(menuOptions,tearoff=0)
